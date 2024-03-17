@@ -1,3 +1,9 @@
+"""
+Tip Calculator 
+Concepts: If-else statements, logical operators
+
+"""
+
 print('''
 *******************************************************************************
           |                   |                  |                     |
