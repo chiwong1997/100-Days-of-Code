@@ -50,7 +50,8 @@ while not at_goal():
 
 # Day 6 Project - done in the reeborg website 
 # Maze 
-# same as the above code works 
+# https://reeborg.ca/reeborg.html?lang=en&mode=python&menu=worlds%2Fmenus%2Freeborg_intro_en.json&name=Maze&url=worlds%2Ftutorial_en%2Fmaze1.json
+# same as the above 
 
 def turn_right():
     turn_left()

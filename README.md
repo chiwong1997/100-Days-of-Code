@@ -8,3 +8,6 @@ Day 2 - Tip Calculator
 Day 3 - Treasure Island Game 
 Day 4 - Rock Paper Scissors
 Day 5 - Random Password Generator 
+Day 6 - Maze (done on the reeborg website)
+Day 7 - Hangman 
+Day 8 - 
