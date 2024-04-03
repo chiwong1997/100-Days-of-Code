@@ -10,4 +10,5 @@ Day 4 - Rock Paper Scissors
 Day 5 - Random Password Generator 
 Day 6 - Maze (done on the reeborg website)
 Day 7 - Hangman 
-Day 8 - 
+Day 8 - Caesar Cipher
+Day 9 - 
