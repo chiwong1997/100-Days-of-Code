@@ -138,7 +138,7 @@ while report_flag == True and order_flag == True:
 
             money_inserted = quarters*0.25 + dimes*0.1 + nickels*0.05 + pennies*0.01
 
-    # TODO: 6. Check if the transaction is successful
+# TODO: 6. Check if the transaction is successful
 
             check_transaction(inserted=money_inserted, order=coffee_order, menu=MENU, resource=resources, profit=profits)
             previous_coffee_order = coffee_order
