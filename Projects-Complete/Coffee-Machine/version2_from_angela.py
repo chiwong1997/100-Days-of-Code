@@ -65,7 +65,7 @@ def make_coffee(drink_name: str, order_ingredients: dict):
     """Deduct the required ingredients from the resources."""
     for item in order_ingredients:
         resources[item] -= order_ingredients[item]
-        print(f"Here is your {drink_name}")
+    print(f"Here is your {drink_name}")
 
 profit = 0
 is_on = True
