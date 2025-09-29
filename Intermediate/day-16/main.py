@@ -15,3 +15,13 @@ print(my_screen.canvheight)
 # object.attribute
 my_screen.exitonclick()
 # object.method
+
+table = prettytable.PrettyTable()
+# object = module.Class()
+table.add_column("Pokemon Name", ["Pikachu", "Squirtle", "Charmander"])
+# object.method
+table.add_column("Type", ["Electric", "Water", "Fire"])
+# object.method
+table.align = "l"
+
+print(table)
