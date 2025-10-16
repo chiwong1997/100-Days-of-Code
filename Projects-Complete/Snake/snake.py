@@ -30,7 +30,17 @@ class Snake:
         # in our list of segments - note that position is a method from the Turtle class
         self.add_segment(self.segments[-1].position())
 
-    
+    def reset(self):
+        """Clear the original snake and then create a new snake in the starting position"""
+        # Make the snake disappear off screen 
+        for segment in self.segments:
+            segment.goto(1000, 1000)
+        # Clear the list of segments 
+        self.segments.clear()
+        # Create a new snake
+        self.create_snake()
+        self.head = self.segments[0]
+
     def move(self):
         for seg_num in range(len(self.segments) - 1, 0, -1):
             new_x = self.segments[seg_num - 1].xcor()
