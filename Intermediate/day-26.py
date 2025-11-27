@@ -1,3 +1,4 @@
+import random
 # List & Dictionary Comprehension
 # general format = new_list = [new_item for item in list]
 
@@ -62,3 +63,29 @@ print(long_names)
 
 # result = [int(n) for n in results]
 
+# dictionary comprehension format
+# new_dict = {new_key:new_value for item in list if x}
+# new_dict  {new_key:new_value for (key,value) in dict.items() if x}
+
+students_scores = {student: random.randint(1,100) for student in names}
+print(students_scores)
+
+passed_students = {student:score for (student, score) in students_scores.items() if score >= 50}
+print(passed_students)
+
+# iterate over a pandas data frame
+import pandas as pd
+student_dict = {
+    'student': ["Angela", "James", "Lily"],
+    'score' : [56, 76, 88]
+}
+student_df = pd.DataFrame(student_dict)
+for (index, row) in student_df.iterrows():
+    print(row)
+
+for (index, row) in student_df.iterrows():
+    print(row.student)
+
+for (index, row) in student_df.iterrows():
+    if row.student == "Angela":
+        print(row.score)
