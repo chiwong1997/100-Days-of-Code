@@ -27,7 +27,7 @@ while len(guessed_states) < US_STATES_COUNT and game_is_on:
     answer_state=screen.textinput(title=f"{len(guessed_states)}/50 correct", 
                                   prompt="What is your guess? ")
     # If user types exit or exits the text input, exit the game
-    if answer_state.lower() == "exit" or answer_state is None:
+    if answer_state is None or answer_state.lower() == "exit":
         game_is_on = False
         break
     # If user types the wrong answer, continue the game
@@ -45,10 +45,11 @@ while len(guessed_states) < US_STATES_COUNT and game_is_on:
         statewriter.write_state(state_name=state_name, x=x_cor, y=y_cor)
     
 # Create a list of states to learn
-missing_states = []
-for state in states_list:
-    if state not in guessed_states:
-        missing_states.append(state.capitalize())
+missing_states = [state.capitalize() for state in states_list if state not in guessed_states]
+# missing_states = []
+# for state in states_list:
+#     if state not in guessed_states:
+#         missing_states.append(state.capitalize())
 
 # Save the missing states to a CSV file
 missing_states_data = {'Missing States': missing_states}

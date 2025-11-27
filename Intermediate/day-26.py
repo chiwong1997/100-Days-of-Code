@@ -1,5 +1,5 @@
-# List Comprehension
-# new_list = [new_item for item in list]
+# List & Dictionary Comprehension
+# general format = new_list = [new_item for item in list]
 
 numbers = [1,2,3,4,5]
 add_one = [number + 1 for number in numbers]
@@ -20,3 +20,45 @@ print(short_names)
 
 long_names = [n.upper() for n in names if len(n)>4]
 print(long_names)
+
+# CODING EXERCISE - output all numbers in file 1 that are in file 2
+# -----------------------------------------------------------------------
+# file 1 (string of integers all on separate line)
+# 3
+# 6
+# 5
+# 8
+# 33
+# 12
+# 7
+# 4
+# 72
+# 2
+# 42
+# 13
+# file 2 (sting of integers all on separate line)
+# 3
+# 6
+# 13
+# 5
+# 7
+# 89
+# 12
+# 3
+# 33
+# 34
+# 1
+# 344
+# 42
+
+# actual code
+# with open('file1.txt') as f1:
+#     f1_str = f1.readlines()
+
+# with open('file2.txt') as f2:
+#     f2_str = f2.readlines()
+
+# results = [int_str for int_str in f1_str if int_str in f2_str]
+
+# result = [int(n) for n in results]
+
