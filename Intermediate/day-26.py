@@ -79,7 +79,11 @@ student_dict = {
     'student': ["Angela", "James", "Lily"],
     'score' : [56, 76, 88]
 }
+
 student_df = pd.DataFrame(student_dict)
+
+# dictionary comprehension to convery df to dict: {row.key:row.value for (index, row) in df.iterrows()}
+
 for (index, row) in student_df.iterrows():
     print(row)
 
