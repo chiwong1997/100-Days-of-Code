@@ -3,6 +3,8 @@ from pathlib import Path
 import random
 
 BASE_DIR = Path(__file__).parent
+file_path_text = BASE_DIR / "password_manager.txt"
+print(file_path_text)
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -25,7 +27,7 @@ def save_password():
     email = email_entry.get()
     password = password_entry.get()
 
-    with open(BASE_DIR / "password_manager.txt", "a") as data_file:
+    with open(file_path_text, "a") as data_file:
         data_file.write(f"{website} | {email} | {password}\n")
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -37,8 +39,8 @@ window.config(padx=50, pady=50)
 
 # Canvas - Password Logo
 canvas = Canvas(width=200, height=200)
-file_path = BASE_DIR / "logo.png"
-logo_img = PhotoImage(file=file_path)
+file_path_logo = BASE_DIR / "logo.png"
+logo_img = PhotoImage(file=file_path_logo)
 canvas.create_image(100,100, image=logo_img)
 canvas.grid(column=1, row=0)
 
