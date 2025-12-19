@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from pathlib import Path
 import random
+import pyperclip
 
 BASE_DIR = Path(__file__).parent
 file_path_text = BASE_DIR / "password_manager.txt"
@@ -20,7 +21,7 @@ def generate_password():
     password = ''.join(password_list)
     password_entry.delete(0, END)
     password_entry.insert(0, password)
-    return password
+    pyperclip.copy(password)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
