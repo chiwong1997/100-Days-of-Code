@@ -1,10 +1,12 @@
 from tkinter import *
+from tkinter import messagebox
 from pathlib import Path
 import random
 
 BASE_DIR = Path(__file__).parent
 file_path_text = BASE_DIR / "password_manager.txt"
 print(file_path_text)
+MY_EMAIL = "chiyinwong97@gmail.com"
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -23,12 +25,34 @@ def generate_password():
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 def save_password():
-    website = website_entry.get()
-    email = email_entry.get()
-    password = password_entry.get()
+    # is_website_empty = FALSE
+    # is_email_empty = FALSE
+    # is_password_empty = FALSE
 
-    with open(file_path_text, "a") as data_file:
-        data_file.write(f"{website} | {email} | {password}\n")
+    website = website_entry.get()
+    # if len(website) == 0:
+    #     messagebox.showerror(title="Empty Field", message="The website field cannot be empty!")
+    #     is_website_empty = TRUE
+    email = email_entry.get()
+    # if len(email) == 0:
+    #     messagebox.showerror(title="Empty Field", message="The email field cannot be empty")
+    #     is_email_empty = TRUE
+    password = password_entry.get()
+    # if len(password) == 0:
+    #     messagebox.showerror(title="Empty Field", message="The password field cannot be empty")
+    #     is_password_empty = TRUE
+
+    if len(website) == 0 or len(email) == 0 or len(password) == 0:
+        messagebox.showerror(title="Empty Field", message="Some fields are empty, please recheck.")
+    else:
+    # if is_website_empty == FALSE and is_email_empty == FALSE and is_password_empty == FALSE:
+        is_ok = messagebox.askokcancel(title=f"Details for {website}", 
+                                       message=f"These are the details entered: \nEmail:{email} \nPassword:{password}\n Is it ok to save?")
+        if is_ok == TRUE:
+            with open(file_path_text, "a") as data_file:
+                data_file.write(f"{website} | {email} | {password}\n")
+                website_entry.delete(0, END)
+                password_entry.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 # Window - Password Manager
@@ -59,10 +83,12 @@ password_label.grid(column=0, row=3)
 # Entry - Website
 website_entry = Entry(width=35)
 website_entry.grid(column=1, row=1, columnspan=2)
+website_entry.focus()
 
 # Entry - Email/Username
 email_entry = Entry(width=35)
 email_entry.grid(column=1, row=2, columnspan=2)
+email_entry.insert(0, MY_EMAIL)
 
 # Entry - Password
 password_entry = Entry(width=21)
