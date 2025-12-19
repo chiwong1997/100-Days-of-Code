@@ -3,9 +3,11 @@ from tkinter import messagebox
 from pathlib import Path
 import random
 import pyperclip
+import json
 
 BASE_DIR = Path(__file__).parent
 file_path_text = BASE_DIR / "password_manager.txt"
+file_path_json = BASE_DIR / "password_manager.json"
 print(file_path_text)
 MY_EMAIL = "chiyinwong97@gmail.com"
 
@@ -26,34 +28,80 @@ def generate_password():
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 def save_password():
-    # is_website_empty = FALSE
-    # is_email_empty = FALSE
-    # is_password_empty = FALSE
 
     website = website_entry.get()
-    # if len(website) == 0:
-    #     messagebox.showerror(title="Empty Field", message="The website field cannot be empty!")
-    #     is_website_empty = TRUE
     email = email_entry.get()
-    # if len(email) == 0:
-    #     messagebox.showerror(title="Empty Field", message="The email field cannot be empty")
-    #     is_email_empty = TRUE
     password = password_entry.get()
-    # if len(password) == 0:
-    #     messagebox.showerror(title="Empty Field", message="The password field cannot be empty")
-    #     is_password_empty = TRUE
+    new_data = {
+        website: {
+            "email": email,
+            "password": password
+        }
+        }
 
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
         messagebox.showerror(title="Empty Field", message="Some fields are empty, please recheck.")
     else:
-    # if is_website_empty == FALSE and is_email_empty == FALSE and is_password_empty == FALSE:
         is_ok = messagebox.askokcancel(title=f"Details for {website}", 
                                        message=f"These are the details entered: \nEmail:{email} \nPassword:{password}\n Is it ok to save?")
         if is_ok == TRUE:
-            with open(file_path_text, "a") as data_file:
-                data_file.write(f"{website} | {email} | {password}\n")
+            # with open(file_path_text, "a") as data_file:
+            #     data_file.write(f"{website} | {email} | {password}\n")
+            #     website_entry.delete(0, END)
+            #     password_entry.delete(0, END)
+            try:
+                with open(file_path_json, "r") as data_file:
+                    # Reading old data from json file
+                    data = json.load(data_file)
+            except FileNotFoundError:
+                with open(file_path_json, "w") as data_file:
+                    # Creating json file if it doesn't exist and writing data into it
+                    json.dump(new_data, data_file, indent = 4)
+            else:
+                # Updating old data with new data
+                data.update(new_data)
+                with open(file_path_json, "w") as data_file:
+                    # Writing new data back to the json file
+                    json.dump(data, data_file, indent = 4)
+            finally:
                 website_entry.delete(0, END)
                 password_entry.delete(0, END)
+
+# ------------- SEARCH FUNCTIONALITY -------------------
+
+def search():
+    website = website_entry.get()
+    try:
+        with open(file_path_json, "r") as data_file:
+            passwords = json.load(data_file)
+
+        email_password_dict = passwords[website]
+        email = email_password_dict["email"]
+        password = email_password_dict["password"]
+        messagebox.showinfo(title=f"Password for {website}",
+                            message=f"Email: {email}\nPassword: {password}")
+    except FileNotFoundError:
+        messagebox.showerror(title="No passwords saved yet",
+                             message="There are currently no passwords saved yet, please save first.")
+    except KeyError:
+        messagebox.showerror(title="No password saved",
+                             message = f"No data found for {website}")
+        
+    ### An easier way to write the above code - for reference, as it seems cleaner and easier to follow: 
+
+    # website = website_entry.get()
+    # try:
+    #     with open(file_path_json, "r") as data_file:
+    #         passwords = json.load(data_file)
+    # except FileNotFoundError:
+    #     messagebox.showerror(title="Error", message="No data file found")
+    # else:
+    #     if website in passwords:
+    #         email=passwords[website]["email"]
+    #         password = passwords[website]["password"]
+    #         messagebox.showinfo(title=website, message=f"Email: {email}\n Password: {password}")
+    #     else:
+    #         messagebox.error(title="Error", message=f"No details for {website} found.")
 
 # ---------------------------- UI SETUP ------------------------------- #
 # Window - Password Manager
@@ -82,12 +130,12 @@ password_label = Label(text="Password:")
 password_label.grid(column=0, row=3)
 
 # Entry - Website
-website_entry = Entry(width=35)
-website_entry.grid(column=1, row=1, columnspan=2)
+website_entry = Entry(width=21)
+website_entry.grid(column=1, row=1)
 website_entry.focus()
 
 # Entry - Email/Username
-email_entry = Entry(width=35)
+email_entry = Entry(width=38)
 email_entry.grid(column=1, row=2, columnspan=2)
 email_entry.insert(0, MY_EMAIL)
 
@@ -100,8 +148,11 @@ generate_password_button = Button(text="Generate Password", command=generate_pas
 generate_password_button.grid(column=2, row=3)
 
 # Button - Add
-add_button = Button(text="Add", width=36, command=save_password)
+add_button = Button(text="Add", width=38, command=save_password)
 add_button.grid(column=1, row=4, columnspan=2)
 
+# Button - Search
+search_button = Button(text="Search", width=15, command=search)
+search_button.grid(column=2, row=1)
 
 window.mainloop()

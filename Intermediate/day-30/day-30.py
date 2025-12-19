@@ -10,6 +10,7 @@
 from pathlib import Path
 BASE_DIR = Path(__file__).parent
 file_path_dir = BASE_DIR / "a_file.txt"
+file_path_json = BASE_DIR / "a_json.json"
 
 try:
     with open(file_path_dir) as data_file:
@@ -42,3 +43,17 @@ if height > 3:
 
 bmi = weight/height ** 2
 print(bmi)
+
+# aside: reading and writing json 
+import json
+a_dict = {"a": 
+          {
+              "b":"c"
+              }
+          }
+with open(file_path_json, "w") as json_file:
+    json.dump(a_dict, json_file, indent = 4)
+
+with open(file_path_json, "r") as json_file:
+    json.load(file_path_json)
+    # data = json.load(file_path_json) - this line of code will load json data into the data variable (as a dict)
