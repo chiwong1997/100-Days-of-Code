@@ -17,12 +17,28 @@ TITLE_FONT = ("Ariel", 32, "italic")
 WORD_FONT = ("Ariel", 60, "bold")
 LANGUAGE = "French"
 ENGLISH = "English"
+current_card = {}
 
 # Functions
 def change_word():
+    global current_card
+    global flip_timer
+    # Invalidate the previous timer
+    window.after_cancel(flip_timer)
     index = random.randint(0, len(df) - 1)
-    card_front_canvas.itemconfig(word_text, text=df[index][LANGUAGE])
-    card_front_canvas.itemconfig(title_text, text = LANGUAGE)
+    current_card = df[index]
+    # Update the card with the new LANGUAGE word
+    card_front_canvas.itemconfig(word_text, text=current_card[LANGUAGE], fill="black")
+    card_front_canvas.itemconfig(title_text, text = LANGUAGE, fill="black")
+    card_front_canvas.itemconfig(card_background, image=card_front_image)
+    # Set up a new timer so it will wait 3 seconds before flipping
+    flip_timer = window.after(3000, func = flip_card)
+
+def flip_card():
+    # Update the card with the corresponding ENGLISH word (after 3 seconds)
+    card_front_canvas.itemconfig(title_text, text=ENGLISH, fill="white")
+    card_front_canvas.itemconfig(word_text, text=current_card[ENGLISH], fill="white")
+    card_front_canvas.itemconfig(card_background, image=card_back_image)
 
 # ------------------- Data Loading ------------------
 df = pd.read_csv(data_file_path).to_dict(orient="records") # converts to a list of dictionaries
@@ -32,10 +48,13 @@ window = Tk()
 window.title("Flash Cards")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 
+flip_timer = window.after(3000, func = flip_card)
+
 # Flash Card Canvas
 card_front_image = PhotoImage(file=card_front_image_path)
+card_back_image = PhotoImage(file=card_back_image_path)
 card_front_canvas = Canvas(width=800, height=526)
-card_front_canvas.create_image(400, 263, image=card_front_image)
+card_background = card_front_canvas.create_image(400, 263, image=card_front_image)
 card_front_canvas.config(bg=BACKGROUND_COLOR, highlightthickness=0)
 title_text = card_front_canvas.create_text(400, 150, text="", font=TITLE_FONT)
 word_text = card_front_canvas.create_text(400, 263, text="", font=WORD_FONT)
