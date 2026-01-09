@@ -10,14 +10,17 @@ card_front_image_path = BASE_DIR / "images/card_front.png"
 card_back_image_path = BASE_DIR / "images/card_back.png"
 right_image_path = BASE_DIR / "images/right.png"
 wrong_image_path = BASE_DIR / "images/wrong.png"
+words_to_learn_file_path = BASE_DIR / "data/words_to_learn.csv"
 
 # Constants
 BACKGROUND_COLOR = "#B1DDC6"
 TITLE_FONT = ("Ariel", 32, "italic")
 WORD_FONT = ("Ariel", 60, "bold")
+RESET_FONT = ("Ariel", 12, "bold")
 LANGUAGE = "French"
 ENGLISH = "English"
 current_card = {}
+to_learn = {}
 
 # Functions
 def change_word():
@@ -25,8 +28,8 @@ def change_word():
     global flip_timer
     # Invalidate the previous timer
     window.after_cancel(flip_timer)
-    index = random.randint(0, len(df) - 1)
-    current_card = df[index]
+    index = random.randint(0, len(to_learn) - 1)
+    current_card = to_learn[index]
     # Update the card with the new LANGUAGE word
     card_front_canvas.itemconfig(word_text, text=current_card[LANGUAGE], fill="black")
     card_front_canvas.itemconfig(title_text, text = LANGUAGE, fill="black")
@@ -40,8 +43,27 @@ def flip_card():
     card_front_canvas.itemconfig(word_text, text=current_card[ENGLISH], fill="white")
     card_front_canvas.itemconfig(card_background, image=card_back_image)
 
+def is_known():
+    to_learn.remove(current_card)
+    pd.DataFrame(to_learn).to_csv(words_to_learn_file_path, index=False)
+    change_word()
+
+def reset():
+    global to_learn
+    original_df = pd.read_csv(data_file_path)
+    to_learn = original_df.to_dict(orient="records") 
+    pd.DataFrame(to_learn).to_csv(words_to_learn_file_path, index=False)
+
+
 # ------------------- Data Loading ------------------
-df = pd.read_csv(data_file_path).to_dict(orient="records") # converts to a list of dictionaries
+try:
+    df = pd.read_csv(words_to_learn_file_path) # converts to a list of dictionaries
+except FileNotFoundError:
+    # this error will occur if the words_to_learn file does not exist (first time running the program or accidental deletion)
+    original_df = pd.read_csv(data_file_path)
+    to_learn = original_df.to_dict(orient="records") # converts to a list of dictionaries
+else:
+    to_learn = df.to_dict(orient="records")
 
 # ------------------ UI Setup ------------------
 window = Tk()
@@ -67,8 +89,12 @@ wrong_button.grid(column=0, row=1)
 
 # Right Button
 right_image = PhotoImage(file=right_image_path)
-right_button = Button(image=right_image, highlightthickness=0, command = change_word)
+right_button = Button(image=right_image, highlightthickness=0, command = is_known)
 right_button.grid(column=1, row=1)
+
+# Reset Button
+reset_button = Button(text="RESET PROGRESS", width=16, font=RESET_FONT,command = reset)
+reset_button.grid(column=0, row=2, columnspan=2)
 
 change_word()
 
