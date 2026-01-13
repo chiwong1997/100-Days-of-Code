@@ -32,7 +32,9 @@ def send_birthday_email(to_email: str, subject: str, body: str):
 now = dt.datetime.now()
 todays_date = (now.month, now.day)
 birthdays_data = pd.read_csv(BIRTHDAYS_FILE)
-birthdays_dict = {(data_row["month"], data_row["day"]): data_row for (index, data_row) in birthdays_data.iterrows()}
+birthdays_dict = {
+    (data_row["month"], data_row["day"]): data_row for (index, data_row) in birthdays_data.iterrows()
+    }
 
 if todays_date in birthdays_dict:
     print("today is someone's birthday")
