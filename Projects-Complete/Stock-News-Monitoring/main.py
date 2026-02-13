@@ -21,7 +21,7 @@ account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
 auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
 whatsapp_num = os.environ.get("PHONE_NUMBER")
 
-# Get stock price data from Alpha Vantage API
+# Get Closing Price and Difference Between Price
 news_params = {
     "function": STOCK_FUNCTION,
     "symbol": STOCK_NAME,
@@ -30,8 +30,6 @@ news_params = {
 response = requests.get(STOCK_ENDPOINT, params=news_params)
 response.raise_for_status()
 data = response.json()
-
-# Get Closing Price and Difference Between Price
 today_date = dt.datetime.now()
 yesterday_date = today_date - dt.timedelta(days=1)
 yesterday_closing_price = data["Time Series (Daily)"][yesterday_date.strftime("%Y-%m-%d")]["4. close"]
