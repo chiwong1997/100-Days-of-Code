@@ -3,6 +3,8 @@ import pandas as pd
 import datetime as dt
 import pathlib
 import random
+import os
+from dotenv import load_dotenv
 
 # -------- constants --------
 BASE_DIR = pathlib.Path(__file__).parent
@@ -10,8 +12,11 @@ BIRTHDAYS_FILE = BASE_DIR / "birthdays.csv"
 LETTER_TEMPLATES_DIR = BASE_DIR / "letter_templates"
 GMAIL_SMTP = "smtp.gmail.com"
 PORT = 587
-MY_EMAIL = "100daysofcodeproject@gmail.com"
-MY_PASSWORD = "flhitjcbrwhfybmx"
+
+# ----load env variables---
+load_dotenv()
+MY_EMAIL = os.environ.get("EMAIL")
+MY_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 # -------- functions ---------
 def choose_random_letter():

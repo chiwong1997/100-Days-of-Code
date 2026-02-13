@@ -6,8 +6,8 @@
 # GMAIL_SMTP = "smtp.gmail.com"
 # PORT = 587
 
-# my_email = "100daysofcodeproject@gmail.com"
-# my_password = "flhitjcbrwhfybmx"
+# my_email = "xxx"
+# my_password = "xxx"
 
 
 # with smtplib.SMTP(GMAIL_SMTP, port=PORT) as connection:

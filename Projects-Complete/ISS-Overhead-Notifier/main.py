@@ -2,14 +2,19 @@ import requests
 import datetime as dt
 import smtplib
 import time
+import os
+from dotenv import load_dotenv
 
 # ----constants----
 MY_LAT = 22.2792968
 MY_LONG = 114.1628907
 GMAIL_SMTP = "smtp.gmail.com"
 PORT = 587
-MY_EMAIL = "100daysofcodeproject@gmail.com"
-MY_PASSWORD = "flhitjcbrwhfybmx"
+
+# ----load env variables ---
+load_dotenv()
+MY_EMAIL = os.environ.get("EMAIL")
+MY_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 # ----functions----
 
