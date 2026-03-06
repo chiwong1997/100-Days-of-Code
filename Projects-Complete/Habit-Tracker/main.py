@@ -17,6 +17,8 @@ USERNAME = "daysofcodeproject1"
 TOKEN = "fjjfdjfksjdkjlajdskfal"
 GRAPHID = "graph1"
 
+# Create an Account
+
 pixela_endpoint = "https://pixe.la/v1/users"
 user_params = {
     "token": TOKEN,
@@ -51,7 +53,7 @@ today = dt.datetime.now()
 pixel_creation_endpoint = f"{pixela_endpoint}/{user_params['username']}/graphs/{graph_config['id']}"
 pixel_data = {
     "date": today.strftime("%Y%m%d"),
-    "quantity": "1"
+    "quantity": "5"
 }
 response = requests.post(url=pixel_creation_endpoint, json=pixel_data, headers=headers)
 print(response.text)
@@ -66,4 +68,13 @@ update_graph = {
 response = requests.put(url=pixel_creation_endpoint, json=update_graph, headers=headers)
 print(response.text)
 
-# Deleting - use a DELETE request
+# Update a pixel or add a pixel if it does not exist - use a PUT request
+update_pixel_endpoint = f"{pixela_endpoint}/{user_params['username']}/graphs/{graph_config['id']}/{today.strftime('%Y%m%d')}"
+new_pixel_data = {"quantity": "7"}
+response = requests.put(url=update_pixel_endpoint, json=new_pixel_data, headers=headers)
+print(response.text)
+
+# Deleting a pixel - use a DELETE request
+delete_pixel_endpoint = f"{pixela_endpoint}/{user_params['username']}/graphs/{graph_config['id']}/{today.strftime('%Y%m%d')}"
+response = requests.delete(url=delete_pixel_endpoint, headers=headers)
+print(response.text)
