@@ -1,14 +1,19 @@
-import requests
-import os
-from dotenv import load_dotenv
+import data_manager
+from flight_search import FlightSearch
 
-# ---- load env variables ----
-load_dotenv()
-SERPAPI_KEY = os.getenv("SERPAPI_KEY")
+data_manager = data_manager.DataManager()
+sheet_data = data_manager.get_destination_data()
 
-SHEETY_BEARER_TOKEN = os.getenv("SHEETY_BEARER_TOKEN")
-SHEETY_URL = "https://api.sheety.co/82fd2aebc26d853b9acc6a806c5e5510/flightDeals/prices"
+print(sheet_data)
 
-# ---- Sheety API ----
-response = requests.get(url=SHEETY_URL, headers={"Authorization": f"Bearer {SHEETY_BEARER_TOKEN}"})
-print(response.text)
+# if the IATA code is missing for the first row, we will reupdate the IATA code for all rows
+if sheet_data[0]["iataCode"] == "":
+    print("The first IATA code is missing, updating IATA codes for the sheet...")
+    flight_search = FlightSearch()
+    for row in sheet_data:
+        city_name = row["city"]
+        row["iataCode"] = flight_search.get_destination_code(city_name)
+    
+    # we update the destination data in the data manager, and then call update_destination_codes to update the Google Sheet
+    data_manager.destination_data = sheet_data
+    data_manager.update_destination_codes()
